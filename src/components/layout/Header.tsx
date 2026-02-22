@@ -36,11 +36,20 @@ export function Header() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-          scrolled ? "bg-white/90 backdrop-blur-md py-3 shadow-sm border-white/20" : "bg-gradient-to-b from-black/90 via-black/50 to-transparent py-6"
+          // Mobile: Always transparent, no border. Desktop (md): Dynamic background.
+          scrolled 
+            ? "bg-transparent md:bg-white/90 md:backdrop-blur-md md:py-3 md:shadow-sm md:border-white/20" 
+            : "bg-transparent md:bg-gradient-to-b md:from-black/90 md:via-black/50 md:to-transparent md:py-6"
         )}
       >
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-          
+          {/* Logo - Hidden on mobile ("only three bars") */}
+          <Link to="/" className="hidden md:flex text-2xl font-serif font-bold tracking-tight group z-50 relative">
+            <span className={cn("transition-colors", scrolled || mobileMenuOpen ? "text-primary" : "text-white")}>
+              КУХНИ
+            </span>
+            <span className="text-accent ml-2 group-hover:text-accent-hover transition-colors">МЕЧТЫ</span>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
@@ -67,21 +76,24 @@ export function Header() {
               )}
             >
               <Phone className="w-4 h-4 animate-pulse text-accent" />
-              +7(999)123-45-67
+              +7 (999) 123-45-67
             </a>
-            <Button className="bg-accent text-white hover:bg-accent-hover shadow-lg shadow-accent/20 whitespace-nowrap">
-              Рассчитать проект
-            </Button>
+            {/* Updated Button with Link */}
+            <Link to="/quiz">
+              <Button className="bg-accent text-white hover:bg-accent-hover shadow-lg shadow-accent/20 whitespace-nowrap">
+                Рассчитать кухню
+              </Button>
+            </Link>
           </div>
 
           <button
-            className="md:hidden z-50 p-2 relative"
+            className="md:hidden z-50 p-2 relative ml-auto" // Added ml-auto to push to right since logo is hidden
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
              {mobileMenuOpen ? (
-               <X className="w-6 h-6 text-primary" />
+               <X className="w-8 h-8 text-primary" />
              ) : (
-               <Menu className={cn("w-6 h-6", scrolled ? "text-primary" : "text-white")} />
+               <Menu className={cn("w-8 h-8", scrolled ? "text-primary" : "text-white")} />
              )}
           </button>
         </div>
@@ -123,11 +135,14 @@ export function Header() {
                   className="flex items-center justify-center gap-2 font-mono text-lg text-primary"
                 >
                   <Phone className="w-5 h-5 text-accent" />
-                  +7(999)123-45-67
+                  +7 (999) 123-45-67
                 </a>
-                <Button className="w-full text-lg h-14 bg-primary text-white whitespace-nowrap">
-                  Рассчитать проект
-                </Button>
+                {/* Updated Mobile Button with Link */}
+                <Link to="/quiz" className="w-full">
+                  <Button className="w-full text-lg h-14 bg-primary text-white whitespace-nowrap">
+                    Рассчитать проект
+                  </Button>
+                </Link>
               </motion.div>
             </nav>
           </motion.div>

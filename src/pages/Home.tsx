@@ -33,7 +33,9 @@ function HeroSection() {
           >
             <div className="h-[1px] w-12 bg-accent"></div>
             <span className="text-sm font-medium tracking-widest text-accent uppercase">Кухни на заказ </span>
+            <div className="h-[1px] w-96 bg-accent"></div>
           </motion.div>
+          
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif leading-[1.1] text-white">
             <span className="block overflow-hidden">
