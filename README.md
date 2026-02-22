@@ -36,5 +36,5 @@ npm run build
 - `src/lib` — Утилиты
 
 git add .
-git commit -m "описание"
+git commit -m "черточка и нижние плюшки"
 git push
