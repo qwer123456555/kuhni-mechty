@@ -183,6 +183,7 @@ const Quiz = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<any>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -226,12 +227,36 @@ const Quiz = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission
-    setTimeout(() => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          answers: { ...answers, comment: formData.comment },
+          type: 'Квиз',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+
       setIsSubmitted(true);
-    }, 1500);
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error('Submission failed', error);
+      alert('Ошибка при отправке. Пожалуйста, попробуйте позже или позвоните нам.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -335,8 +360,13 @@ const Quiz = () => {
                      />
                   </div>
                   
-                  <Button type="submit" variant="primary" className="w-full py-4 text-lg shadow-gold glow">
-                    Получить расчёт
+                  <Button 
+                    type="submit" 
+                    variant="primary" 
+                    className="w-full py-4 text-lg shadow-gold glow disabled:opacity-70 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Отправка...' : 'Получить расчёт'}
                   </Button>
                   <p className="text-xs text-center text-text-light mt-4">
                     Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
