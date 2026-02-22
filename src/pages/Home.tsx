@@ -33,7 +33,7 @@ function HeroSection() {
           >
             <div className="h-[1px] w-12 bg-accent"></div>
             <span className="text-sm font-medium tracking-widest text-accent uppercase">Кухни на заказ </span>
-            <div className="h-[1px] w-90 bg-accent"></div>
+            <div className="h-[1px] w-60 bg-accent"></div>
           </motion.div>
           
 
@@ -100,9 +100,7 @@ function HeroSection() {
             className="flex flex-wrap gap-6 pt-4"
           >
             {[
-              { icon: Shield, text: "Гарантия 10 лет" },
-              { icon: TrendingUp, text: "Рассрочка 0%" },
-              { icon: Clock, text: "Монтаж за 1 день" },
+              
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm font-medium text-text-dark/80">
                 <div className="w-6 h-6 rounded-full bg-secondary/30 flex items-center justify-center text-accent-hover">
@@ -132,7 +130,7 @@ function HeroSection() {
                 <Star className="w-4 h-4 fill-current" />
                 <span className="font-bold text-primary">4.9</span>
               </div>
-              <p className="text-xs text-text-medium">Средний рейтинг на основе 1200+ отзывов</p>
+              <p className="text-xs text-text-medium">Средний рейтинг на основе 120+ отзывов</p>
             </motion.div>
 
             {/* Floating Card 2 */}
@@ -141,8 +139,8 @@ function HeroSection() {
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
               className="absolute top-8 right-8 bg-primary/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/10"
             >
-              <p className="text-white/60 text-xs mb-1">Стоимость</p>
-              <p className="text-white font-mono font-medium">от 89 000 ₽/м.п.</p>
+              <p className="text-white/60 text-xs mb-1">без</p>
+              <p className="text-white font-mono font-medium">переплат</p>
             </motion.div>
           </motion.div>
         </div>
