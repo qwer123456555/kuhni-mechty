@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useLayoutEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { Home } from "@/pages/Home";
 import Quiz from "@/pages/Quiz";
 import Catalog from "@/pages/Catalog";
@@ -21,6 +22,7 @@ export function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Analytics />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
