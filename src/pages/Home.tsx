@@ -43,7 +43,7 @@ function HeroSection() {
                 transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
                 className="block"
               >
-                Создаём кухни,
+                Созаём кухни,
               </motion.span>
             </span>
             <span className="block overflow-hidden">
