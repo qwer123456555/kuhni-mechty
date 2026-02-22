@@ -33,7 +33,7 @@ function HeroSection() {
           >
             <div className="h-[1px] w-12 bg-accent"></div>
             <span className="text-sm font-medium tracking-widest text-accent uppercase">Кухни на заказ </span>
-            <div className="h-[1px] w-96 bg-accent"></div>
+            <div className="h-[1px] w-90 bg-accent"></div>
           </motion.div>
           
 

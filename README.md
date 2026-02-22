@@ -34,3 +34,7 @@ npm run build
 - `src/components` — UI компоненты и лэйауты
 - `src/pages` — Страницы (Главная, Квиз, Каталог и др.)
 - `src/lib` — Утилиты
+
+git add .
+git commit -m "описание"
+git push

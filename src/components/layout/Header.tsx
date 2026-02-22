@@ -87,13 +87,18 @@ export function Header() {
           </div>
 
           <button
-            className="md:hidden z-50 p-2 relative ml-auto" // Added ml-auto to push to right since logo is hidden
+            className={cn(
+              "md:hidden z-50 relative ml-auto mt-6 mr-2",
+              "flex items-center justify-center w-14 h-14 rounded-full",
+              "bg-black/40 backdrop-blur-md border border-white/20 shadow-lg",
+              "transition-transform active:scale-95"
+            )}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
              {mobileMenuOpen ? (
-               <X className="w-8 h-8 text-primary" />
+               <X className="w-7 h-7 text-white" />
              ) : (
-               <Menu className={cn("w-8 h-8", scrolled ? "text-primary" : "text-white")} />
+               <Menu className="w-7 h-7 text-white" />
              )}
           </button>
         </div>
