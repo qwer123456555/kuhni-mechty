@@ -33,7 +33,7 @@ function HeroSection() {
           >
             <div className="h-[1px] w-12 bg-accent"></div>
             <span className="text-sm font-medium tracking-widest text-accent uppercase">Кухни на заказ </span>
-            <div className="h-[1px] w-0 bg-accent"></div>
+            <div className="h-[1px] w-40 bg-accent"></div>
           </motion.div>
           
 
@@ -161,17 +161,22 @@ function HeroSection() {
 function MarqueeSection() {
   return (
     <div className="bg-gradient-gold py-4 overflow-hidden relative z-20">
-      <div className="flex w-max animate-marquee">
-        {[...Array(10)].map((_, i) => (
+      <div className="relative w-full overflow-hidden whitespace-nowrap">
+        <div className="flex animate-scroll w-[200%]">
+          <div className="flex w-1/2 justify-around items-center">
+             {[...Array(10)].map((_, i) => (
           <div key={i} className="flex items-center gap-8 mx-4">
             <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">Индивидуальный дизайн</span>
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
-            <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">Немецкая фурнитура</span>
+            <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">качественная фурнитура</span>
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
             <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">Гарантия 10 лет</span>
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
           </div>
         ))}
+          </div>
+
+        </div>
       </div>
     </div>
   );
