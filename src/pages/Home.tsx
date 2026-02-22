@@ -139,17 +139,17 @@ function HeroSection() {
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
               className="absolute top-8 right-8 bg-primary/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/10"
             >
-              <p className="text-white/60 text-xs mb-1">без</p>
-              <p className="text-white font-mono font-medium">переплат</p>
+              <p className="text-white/60 text-xs mb-1">срок сборки</p>
+              <p className="text-white font-mono font-medium">30 дней</p>
             </motion.div>
           </motion.div>
         </div>
       </div>
-      
+      <div>/n</div>
       <motion.div 
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-light/50"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-light/50"
       >
         <span className="text-xs uppercase tracking-widest">Листайте вниз</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent"></div>
