@@ -145,11 +145,10 @@ function HeroSection() {
           </motion.div>
         </div>
       </div>
-      <div>/n</div>
       <motion.div 
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-light/50"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-light/50"
       >
         <span className="text-xs uppercase tracking-widest">Листайте вниз</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent"></div>
