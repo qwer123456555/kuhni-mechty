@@ -266,7 +266,7 @@ function StylesSection() {
         style={{ scrollbarWidth: 'none' }}
       >
         {styles.map((style, i) => (
-          <div key={i} className="min-w-[220px] md:min-w-[280px] h-[320px] relative group rounded-2xl overflow-hidden snap-center flex-shrink-0 cursor-pointer">
+           <div key={i} className="min-w-[200px] md:min-w-[300px] h-[260px] md:h-[420px] relative group rounded-xl md:rounded-2xl overflow-hidden snap-center flex-shrink-0 cursor-pointer">
             <img 
               src={style.img} 
               alt={style.title} 
@@ -274,9 +274,9 @@ function StylesSection() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
             
-            <div className="absolute bottom-0 left-0 w-full p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-              <h3 className="text-xl font-serif font-bold mb-1">{style.title}</h3>
-              <p className="text-white/70 text-sm mb-3">от {style.price} ₽</p>
+            <div className="absolute bottom-0 left-0 w-full p-4 md:p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+              <h3 className="text-lg md:text-2xl font-serif font-bold mb-1">{style.title}</h3>
+              <p className="text-white/70 text-xs md:text-sm mb-2 md:mb-3">от {style.price} ₽</p>
               <span className="inline-flex items-center text-accent text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity delay-100">
                 Подробнее <ArrowRight className="w-3 h-3 ml-2" />
               </span>
