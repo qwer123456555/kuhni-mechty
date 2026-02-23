@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ArrowRight, Check, Star, Shield, Clock, TrendingUp, Sparkles, ChevronLeft, ChevronRight, Phone } from "lucide-react";
+import { ArrowRight, Check, Star, Sparkles, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/Button";
 
@@ -101,12 +101,12 @@ function HeroSection() {
           >
             {[
               
-            ].map((item, i) => (
+            ].map((i) => (
               <div key={i} className="flex items-center gap-2 text-sm font-medium text-text-dark/80">
                 <div className="w-6 h-6 rounded-full bg-secondary/30 flex items-center justify-center text-accent-hover">
                   <Check className="w-3 h-3" />
                 </div>
-                {item.text}
+                
               </div>
             ))}
           </motion.div>
@@ -266,7 +266,7 @@ function StylesSection() {
         style={{ scrollbarWidth: 'none' }}
       >
         {styles.map((style, i) => (
-          <div key={i} className="w-[140px] md:w-[300px] h-[200px] md:h-[420px] relative group rounded-xl md:rounded-2xl overflow-hidden snap-center flex-shrink-0 cursor-pointer shadow-md md:shadow-lg">
+          <div key={i} className="w-[140px] md:w-[500px] h-[200px] md:h-[420px] relative group rounded-xl md:rounded-2xl overflow-hidden snap-center flex-shrink-0 cursor-pointer shadow-md md:shadow-lg">
             <img 
               src={style.img} 
               alt={style.title} 
