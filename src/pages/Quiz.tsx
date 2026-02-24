@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -171,7 +171,11 @@ export default function Quiz() {
     const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 
     if (!token || !chatId) {
-        alert("Ошибка настройки: Нет токена Telegram. Сообщите администратору.");
+        console.error("Missing Telegram configuration");
+        if (!token) console.error("VITE_TELEGRAM_TOKEN is missing");
+        if (!chatId) console.error("VITE_TELEGRAM_CHAT_ID is missing");
+        
+        alert("Ошибка настройки: Не найдены токены Telegram.\n\nУбедитесь, что в настройках Timeweb добавлены переменные:\n- VITE_TELEGRAM_TOKEN\n- VITE_TELEGRAM_CHAT_ID\n\nВажно: названия должны начинаться с 'VITE_'!");
         setIsSubmitting(false);
         return;
     }
