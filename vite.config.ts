@@ -15,12 +15,6 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: `script.js`,
-        chunkFileNames: `script.js`,
-        assetFileNames: `[name].[ext]`
-      }
-    }
+    // Using default rollup options for proper hashing and caching
   }
 });
