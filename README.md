@@ -27,7 +27,7 @@ npm run build
 - **Vite**
 - **Tailwind CSS 4**
 - **Framer Motion** (анимации)
-- **Lucide React** (иконки)
+- **Lucide React** (иконк)
 - **React Router** (навигация)
 
 ## 📁 Структура проекта
