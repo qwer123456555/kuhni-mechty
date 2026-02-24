@@ -167,7 +167,7 @@ export default function Quiz() {
 
     setIsSubmitting(true);
 
-   const token = "AAEgTSpEPbq3sgF9n5VJHx6OyzyebVkEz9I";  // Например: "6031653609:AAF..."
+   const token = "8531946647:AAEgTSpEPbq3sgF9n5VJHx6OyzyebVkEz9I";  // Например: "6031653609:AAF..."
    const chatId = "536363486";    // Например: "404561239"
 
     if (!token || !chatId) {
