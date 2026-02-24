@@ -1,641 +1,514 @@
-import React, { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Check, ChevronRight, Gift } from "lucide-react";
-import { Button } from "../components/ui/Button";
-import { cn } from "../lib/utils";
+import { 
+  ArrowRight, ArrowLeft, Check
+} from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
-// Icons for Kitchen Shapes (More detailed)
-const ShapeIcon = ({ type, className }: { type: string; className?: string }) => {
-  switch (type) {
-    case "linear":
-      return (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4" className={className}>
-          <rect x="10" y="40" width="80" height="20" rx="2" fill="currentColor" fillOpacity="0.2" />
-          <path d="M10 40h80 M30 40v20 M50 40v20 M70 40v20" />
-          <circle cx="20" cy="50" r="3" fill="currentColor" />
-          <circle cx="60" cy="50" r="3" fill="currentColor" />
-        </svg>
-      );
-    case "L-shape":
-      return (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4" className={className}>
-          <path d="M20 20v60h60" strokeWidth="20" strokeLinecap="round" stroke="currentColor" opacity="0.2" />
-          <path d="M20 20v60h60" strokeLinecap="round" />
-          <path d="M20 40h-5 M20 60h-5 M40 80v5 M60 80v5" strokeWidth="2" />
-          <circle cx="20" cy="30" r="3" fill="currentColor" />
-          <circle cx="70" cy="80" r="3" fill="currentColor" />
-        </svg>
-      );
-    case "U-shape":
-      return (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4" className={className}>
-          <path d="M20 20v60h60v-60" strokeWidth="20" strokeLinecap="round" stroke="currentColor" opacity="0.2" />
-          <path d="M20 20v60h60v-60" strokeLinecap="round" />
-          <circle cx="20" cy="30" r="3" fill="currentColor" />
-          <circle cx="50" cy="80" r="3" fill="currentColor" />
-          <circle cx="80" cy="30" r="3" fill="currentColor" />
-        </svg>
-      );
-    case "island":
-      return (
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4" className={className}>
-          <rect x="10" y="20" width="80" height="20" rx="2" fill="currentColor" fillOpacity="0.2" />
-          <rect x="30" y="60" width="40" height="20" rx="2" fill="currentColor" fillOpacity="0.2" />
-          <path d="M10 20h80 M30 60h40" />
-          <circle cx="20" cy="30" r="3" fill="currentColor" />
-          <circle cx="50" cy="70" r="3" fill="currentColor" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-};
+// --- Data & Types ---
 
-const questions = [
-  {
-    id: "style",
-    title: "Какой стиль вам ближе?",
-    subtitle: "Выберите один вариант, который вам нравится больше всего",
-    type: "cards",
-    options: [
-      {
-        id: "modern",
-        title: "Современный",
-        image: "https://images.unsplash.com/photo-1556910103-1c02745a30bf?auto=format&fit=crop&q=80&w=600",
-      },
-      {
-        id: "classic",
-        title: "Классика",
-        image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=600",
-      },
-      {
-        id: "scandi",
-        title: "Сканди",
-        image: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=600",
-      },
-      {
-        id: "loft",
-        title: "Лофт",
-        image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=600",
-      },
-      {
-        id: "provence",
-        title: "Прованс",
-        image: "https://images.unsplash.com/photo-1484154218962-a1c002085d2f?auto=format&fit=crop&q=80&w=600",
-      },
-      {
-        id: "hitech",
-        title: "Хай-тек",
-        image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=600",
-      },
-    ],
+type QuestionType = 'select' | 'multi-select' | 'slider' | 'cards' | 'form';
+
+interface Question {
+  id: number;
+  type: QuestionType;
+  title: string;
+  subtitle?: string;
+  options?: any[];
+  validation?: (value: any) => boolean;
+}
+
+const KITCHEN_STYLES = [
+  { id: 'modern', title: 'Современный', img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800' },
+  { id: 'classic', title: 'Классика', img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&q=80&w=800' },
+  { id: 'scandi', title: 'Скандинавский', img: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&q=80&w=800' },
+  { id: 'loft', title: 'Лофт', img: 'https://images.unsplash.com/photo-1556909190-eccf4c8ba7ef?auto=format&fit=crop&q=80&w=800' },
+  { id: 'neoclassic', title: 'Неоклассика', img: 'https://images.unsplash.com/photo-1484154218962-a1c002085d2f?auto=format&fit=crop&q=80&w=800' },
+  { id: 'tech', title: 'Хай-тек', img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800' },
+];
+
+const KITCHEN_SHAPES = [
+  { id: 'linear', title: 'Прямая', icon: (
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
+        <rect x="10" y="30" width="80" height="20" rx="2" />
+        <rect x="10" y="30" width="20" height="20" rx="1" fill="currentColor" fillOpacity="0.1" />
+        <rect x="35" y="35" width="10" height="10" rx="5" />
+        <rect x="55" y="32" width="15" height="16" />
+      </svg>
+    ) 
   },
-  {
-    id: "shape",
-    title: "Какая форма кухни вам подходит?",
-    subtitle: "Исходя из планировки вашего помещения",
-    type: "shapes",
-    options: [
-      { id: "linear", title: "Прямая", desc: "Для узких помещений", iconType: "linear" },
-      { id: "L-shape", title: "Г-образная", desc: "Универсальный вариант", iconType: "L-shape" },
-      { id: "U-shape", title: "П-образная", desc: "Много места для хранения", iconType: "U-shape" },
-      { id: "island", title: "С островом", desc: "Для просторных кухонь", iconType: "island" },
-    ],
+  { id: 'corner', title: 'Г-образная', icon: (
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
+        <path d="M10 20 H 40 V 80" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="10" y="20" width="30" height="20" rx="2" />
+        <rect x="20" y="40" width="20" height="40" rx="2" />
+        <circle cx="25" cy="30" r="3" fill="currentColor" />
+      </svg>
+    ) 
   },
-  {
-    id: "area",
-    title: "Какая площадь вашей кухни?",
-    subtitle: "Хотя бы примерно, чтобы мы понимали масштаб",
-    type: "slider",
-    min: 4,
-    max: 30,
-    unit: "м²",
+  { id: 'u-shape', title: 'П-образная', icon: (
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
+        <path d="M10 80 V 20 H 90 V 80" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="10" y="20" width="20" height="60" rx="2" />
+        <rect x="70" y="20" width="20" height="60" rx="2" />
+        <rect x="30" y="20" width="40" height="20" rx="2" />
+      </svg>
+    ) 
   },
-  {
-    id: "material",
-    title: "Какой материал фасадов?",
-    subtitle: "От этого зависит долговечность и внешний вид",
-    type: "cards_text",
-    options: [
-      { id: "ldsp", title: "ЛДСП", desc: "Бюджетный вариант", price: "₽" },
-      { id: "mdf_film", title: "МДФ Плёнка", desc: "Практично и недорого", price: "₽₽" },
-      { id: "mdf_enamel", title: "МДФ Эмаль", desc: "Премиальный вид", price: "₽₽₽" },
-      { id: "wood", title: "Массив", desc: "Элитная классика", price: "₽₽₽₽" },
-    ],
-  },
-  {
-    id: "color",
-    title: "Предпочтительная цветовая гамма",
-    subtitle: "Какие оттенки вы хотите видеть на своей кухне?",
-    type: "colors",
-    options: [
-      { id: "white", title: "Белый", hex: "#FFFFFF", border: true },
-      { id: "beige", title: "Бежевый", hex: "#E8D5B7" },
-      { id: "grey", title: "Серый", hex: "#808080" },
-      { id: "dark", title: "Тёмный", hex: "#2D2D2D" },
-      { id: "green", title: "Зелёный", hex: "#4CAF50" },
-      { id: "blue", title: "Синий", hex: "#1A1A2E" },
-      { id: "wood_tex", title: "Дерево", hex: "url('https://images.unsplash.com/photo-1543446695-950c0250742f?w=100&h=100&fit=crop')", isImage: true },
-    ],
-  },
-  {
-    id: "countertop",
-    title: "Какую столешницу рассматриваете?",
-    subtitle: "Рабочая поверхность - самая важная часть кухни",
-    type: "cards_text",
-    options: [
-      { id: "laminate", title: "Пластик (HPL)", desc: "Износостойкий и доступный", price: "₽" },
-      { id: "artificial_stone", title: "Искусственный камень", desc: "Бесшовное соединение", price: "₽₽₽" },
-      { id: "quartz", title: "Кварцевый агломерат", desc: "Сверхпрочный материал", price: "₽₽₽₽" },
-      { id: "natural_stone", title: "Натуральный камень", desc: "Уникальный рисунок", price: "₽₽₽₽₽" },
-    ],
-  },
-  {
-    id: "appliances",
-    title: "Нужна ли встроенная техника?",
-    subtitle: "Мы можем укомплектовать кухню под ключ",
-    type: "multiselect",
-    options: [
-      { id: "hob", title: "Варочная панель" },
-      { id: "oven", title: "Духовой шкаф" },
-      { id: "dishwasher", title: "Посудомойка" },
-      { id: "fridge", title: "Холодильник" },
-      { id: "hood", title: "Вытяжка" },
-      { id: "microwave", title: "СВЧ" },
-    ],
-  },
-  {
-    id: "gift",
-    title: "Выберите подарок!",
-    subtitle: "За прохождение опроса вы получаете гарантированный бонус",
-    type: "gift",
-    options: [
-      { id: "design", title: "3D-проект", desc: "Бесплатная визуализация", icon: "🎨" },
-      { id: "discount", title: "Скидка 15%", desc: "На гарнитур", icon: "💰" },
-      { id: "mounting", title: "Монтаж", desc: "Установка в подарок", icon: "🔧" },
-      { id: "blum", title: "Петли Blum", desc: "Премиум фурнитура", icon: "🎁" },
-    ],
+  { id: 'island', title: 'С островом', icon: (
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
+         <rect x="10" y="20" width="80" height="20" rx="2" />
+         <rect x="30" y="60" width="40" height="20" rx="2" fill="currentColor" fillOpacity="0.1" />
+      </svg>
+    ) 
   },
 ];
 
-const Quiz = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<any>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+const COLORS = [
+  { id: 'white', title: 'Белый', hex: '#FFFFFF', border: true },
+  { id: 'beige', title: 'Бежевый', hex: '#F5F5DC' },
+  { id: 'grey', title: 'Серый', hex: '#808080' },
+  { id: 'black', title: 'Чёрный', hex: '#000000' },
+  { id: 'green', title: 'Зелёный', hex: '#2E8B57' },
+  { id: 'blue', title: 'Синий', hex: '#4682B4' },
+  { id: 'wood', title: 'Дерево', hex: '#DEB887' },
+  { id: 'other', title: 'Другой', hex: 'linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)' },
+];
+
+const MATERIALS = [
+  { id: 'ldsp', title: 'ЛДСП', desc: 'Бюджетный вариант', price: '₽', img: 'https://images.unsplash.com/photo-1610369874026-6b22c6686307?auto=format&fit=crop&q=60&w=400' },
+  { id: 'mdf-pvc', title: 'МДФ Плёнка', desc: 'Оптимальный выбор', price: '₽₽', img: 'https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?auto=format&fit=crop&q=60&w=400' },
+  { id: 'mdf-enamel', title: 'МДФ Эмаль', desc: 'Премиальный вид', price: '₽₽₽', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=60&w=400' },
+  { id: 'plastic', title: 'Пластик', desc: 'Долговечный', price: '₽₽', img: 'https://images.unsplash.com/photo-1620608138844-6ae32779a552?auto=format&fit=crop&q=60&w=400' },
+];
+
+const COUNTERTOPS = [
+  { id: 'ldsp', title: 'Пластик (HPL)', desc: 'Влагостойкий', price: 'от 4 000 ₽/м', img: 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&q=60&w=400' },
+  { id: 'stone-artificial', title: 'Искусственный камень', desc: 'Без стыков', price: 'от 14 000 ₽/м', img: 'https://images.unsplash.com/photo-1597211833712-5e41dd201646?auto=format&fit=crop&q=60&w=400' },
+  { id: 'stone-natural', title: 'Натуральный камень', desc: 'Вечный', price: 'от 25 000 ₽/м', img: 'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=60&w=400' },
+];
+
+const APPLIANCES = [
+  'Варочная панель', 'Духовой шкаф', 'Посудомойка', 
+  'Холодильник', 'Вытяжка', 'Микроволновка'
+];
+
+const GIFTS = [
+  { id: 'design', title: '3D-проект', desc: 'Визуализация кухни в интерьере', icon: '🎨', price: '15 000 ₽' },
+  { id: 'discount', title: 'Скидка 15%', desc: 'На кухонный гарнитур', icon: '💰', price: 'до 75 000 ₽' },
+  { id: 'install', title: 'Монтаж', desc: 'Бесплатная установка', icon: '🔧', price: '25 000 ₽' },
+  { id: 'blum', title: 'Петли Blum', desc: 'Комплект на 5 ящиков', icon: '🎁', price: '30 000 ₽' },
+];
+
+const QUESTIONS: Question[] = [
+  { id: 1, type: 'cards', title: 'Какой стиль вам ближе?', subtitle: 'Выберите один вариант', options: KITCHEN_STYLES },
+  { id: 2, type: 'cards', title: 'Форма кухни', subtitle: 'Какая планировка помещения?', options: KITCHEN_SHAPES },
+  { id: 3, type: 'slider', title: 'Площадь кухни', subtitle: 'Примерная длина гарнитура' },
+  { id: 4, type: 'cards', title: 'Материал фасадов', subtitle: 'Что вам больше нравится?', options: MATERIALS },
+  { id: 5, type: 'cards', title: 'Цвет кухни', subtitle: 'Предпочтительная гамма', options: COLORS },
+  { id: 6, type: 'cards', title: 'Столешница', subtitle: 'Материал рабочей поверхности', options: COUNTERTOPS },
+  { id: 7, type: 'multi-select', title: 'Встроенная техника', subtitle: 'Что нужно предусмотреть?', options: APPLIANCES },
+  { id: 8, type: 'cards', title: 'Выберите подарок', subtitle: 'За прохождение опроса', options: GIFTS },
+  { id: 9, type: 'form', title: 'Почти готово!', subtitle: 'Куда отправить расчёт?' },
+];
+
+// --- Main Component ---
+
+export default function Quiz() {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, any>>({});
+  const [direction, setDirection] = useState(0);
+  
+  // Form State
+  const [formData, setFormData] = useState({ name: '', phone: '', comment: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Form state
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    comment: "",
-  });
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const question = questions[currentStep];
-  const progress = ((currentStep) / questions.length) * 100;
-  
-  const expertLevel = 
-    progress < 25 ? "Новичок" :
-    progress < 50 ? "Любитель" :
-    progress < 75 ? "Дизайнер" :
-    "Гуру кухонь";
+  // Constants
+  const totalSteps = QUESTIONS.length;
+  const progress = ((step) / (totalSteps - 1)) * 100;
+  const currentQuestion = QUESTIONS[step];
 
-  const handleSelect = (value: any) => {
-    setAnswers({ ...answers, [question.id]: value });
-    // Auto advance for single choice
-    if (question.type !== "slider" && question.type !== "multiselect" && question.type !== "gift") {
+  // Logic
+  const handleAnswer = (answer: any) => {
+    setAnswers(prev => ({ ...prev, [step + 1]: answer }));
+    
+    // Auto advance for single select
+    if (currentQuestion.type === 'cards' || currentQuestion.type === 'select') {
+      // Small delay for animation
       setTimeout(() => {
-        if (currentStep < questions.length) {
-          setCurrentStep(currentStep + 1);
-        }
-      }, 400);
+        if (step < totalSteps - 1) nextStep();
+      }, 300);
     }
   };
 
-  const handleNext = () => {
-    if (currentStep < questions.length) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setIsSubmitted(true);
+  const nextStep = () => {
+    if (step < totalSteps - 1) {
+      setDirection(1);
+      setStep(prev => prev + 1);
     }
   };
-  
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+
+  const prevStep = () => {
+    if (step > 0) {
+      setDirection(-1);
+      setStep(prev => prev - 1);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (!formData.name || !formData.phone) {
+        alert("Пожалуйста, заполните Имя и Телефон");
+        return;
+    }
 
     setIsSubmitting(true);
 
+    const token = import.meta.env.VITE_TELEGRAM_TOKEN;
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+    if (!token || !chatId) {
+        alert("Ошибка настройки: Нет токена Telegram. Сообщите администратору.");
+        setIsSubmitting(false);
+        return;
+    }
+
+    // Formatted Message
+    const message = `
+🌟 <b>Новая заявка с сайта!</b>
+
+👤 <b>Имя:</b> ${formData.name}
+📞 <b>Телефон:</b> ${formData.phone}
+💬 <b>Комментарий:</b> ${formData.comment || "Нет"}
+
+📊 <b>Ответы квиза:</b>
+1. Стиль: ${answers[1]?.title || answers[1] || "-"}
+2. Форма: ${answers[2]?.title || answers[2] || "-"}
+3. Площадь: ${answers[3] || "-"} м²
+4. Фасады: ${answers[4]?.title || answers[4] || "-"}
+5. Цвет: ${answers[5]?.title || answers[5] || "-"}
+6. Столешница: ${answers[6]?.title || answers[6] || "-"}
+7. Техника: ${answers[7] ? answers[7].join(", ") : "-"}
+🎁 Подарок: ${answers[8]?.title || answers[8] || "-"}
+    `;
+
     try {
-      const response = await fetch('/api/telegram', {
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          answers: { ...answers, comment: formData.comment },
-          type: 'Квиз',
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'HTML',
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network error');
+      if (response.ok) {
+        setIsSuccess(true);
+      } else {
+        const errorData = await response.json();
+        console.error("Telegram Error:", errorData);
+        alert(`Ошибка отправки: ${errorData.description || "Неизвестная ошибка"}`);
       }
-
-      setIsSubmitted(true);
-      window.scrollTo(0, 0);
     } catch (error) {
-      console.error('Submission failed', error);
-      alert('Ошибка при отправке. Пожалуйста, попробуйте позже или позвоните нам.');
+      console.error("Network Error:", error);
+      alert("Ошибка сети. Проверьте подключение к интернету.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-light to-white flex items-center justify-center p-4">
-         <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center"
-         >
-            <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check size={40} className="text-success" />
-            </div>
-            <h2 className="text-3xl font-playfair font-bold mb-4">Спасибо!</h2>
-            <p className="text-text-medium mb-8">
-              Ваша заявка принята. Менеджер свяжется с вами в течение 15 минут для уточнения деталей.
-            </p>
-            <div className="bg-secondary/10 p-4 rounded-xl mb-8">
-              <p className="font-medium text-primary">Ваш подарок:</p>
-              <p className="text-xl font-bold text-accent">
-                {questions.find(q => q.id === "gift")?.options?.find((o: any) => o.id === answers.gift)?.title || "3D-проект"}
-              </p>
-            </div>
-            <Link to="/">
-              <Button variant="primary" className="w-full">Вернуться на главную</Button>
-            </Link>
-         </motion.div>
-      </div>
-    );
-  }
+  // Variants for animation
+  const variants = {
+    enter: (direction: number) => ({ x: direction > 0 ? 50 : -50, opacity: 0 }),
+    center: { zIndex: 1, x: 0, opacity: 1 },
+    exit: (direction: number) => ({ zIndex: 0, x: direction < 0 ? 50 : -50, opacity: 0 }),
+  };
 
-  // Final form step
-  if (currentStep === questions.length) {
-    return (
-      <div className="min-h-screen bg-primary flex items-center justify-center p-4">
-        <div className="w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-            {/* Summary */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 bg-light-gray flex flex-col justify-center">
-              <h3 className="text-2xl font-playfair font-bold mb-6">Ваши предпочтения:</h3>
-              <div className="space-y-4">
-                 {Object.entries(answers).map(([key, value]: [string, any]) => {
-                    const q = questions.find(q => q.id === key);
-                    if(!q) return null;
-                    
-                    let label = value;
-                    if(q.options) {
-                       if(Array.isArray(value)) {
-                          label = value.map(v => q.options?.find((o: any) => o.id === v)?.title).join(", ");
-                       } else {
-                          label = q.options.find((o: any) => o.id === value)?.title;
-                       }
-                    }
-                    if(key === 'area') label += ' м²';
+  // Renderers
+  const renderContent = () => {
+    switch (currentQuestion.type) {
+      case 'cards':
+        return (
+          <div className={cn(
+            "grid gap-4",
+            currentQuestion.id === 2 ? "grid-cols-2" : "grid-cols-2 md:grid-cols-3"
+          )}>
+            {currentQuestion.options?.map((opt) => (
+              <div 
+                key={opt.id || opt}
+                onClick={() => handleAnswer(opt)}
+                className={cn(
+                  "relative group cursor-pointer rounded-2xl overflow-hidden border-2 transition-all duration-300",
+                  answers[step + 1] === opt || answers[step + 1]?.id === opt.id 
+                    ? "border-accent bg-accent/5 shadow-lg scale-[1.02]" 
+                    : "border-transparent bg-white shadow-sm hover:shadow-md hover:scale-[1.01]"
+                )}
+              >
+                {/* Image or Icon */}
+                {opt.img && (
+                  <div className="h-32 md:h-40 overflow-hidden">
+                    <img src={opt.img} alt={opt.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                )}
+                {opt.icon && typeof opt.icon !== 'string' && (
+                  <div className="h-32 p-6 flex items-center justify-center text-primary/80 group-hover:text-primary transition-colors">
+                    {opt.icon}
+                  </div>
+                )}
+                {opt.hex && (
+                   <div className="h-32 w-full" style={{ background: opt.hex, borderBottom: opt.border ? '1px solid #eee' : 'none' }}></div>
+                )}
 
-                    return (
-                       <div key={key} className="flex justify-between border-b border-gray-200 pb-2">
-                          <span className="text-text-medium font-medium">{q.title.split(' ')[1]}:</span> 
-                          {/* Hacky shortened title for summary */}
-                          <span className="font-bold text-primary">{label}</span>
-                       </div>
-                    )
-                 })}
+                <div className="p-4 text-center">
+                  {opt.icon && typeof opt.icon === 'string' && <div className="text-4xl mb-2">{opt.icon}</div>}
+                  <h3 className="font-bold text-primary text-sm md:text-base">{opt.title}</h3>
+                  {opt.desc && <p className="text-xs text-text-light mt-1">{opt.desc}</p>}
+                  {opt.price && <p className={cn("text-xs font-mono mt-2", opt.title.includes('3D') ? 'line-through text-red-400' : 'text-accent')}>{opt.price}</p>}
+                </div>
+
+                {/* Checkmark */}
+                {(answers[step + 1] === opt || answers[step + 1]?.id === opt.id) && (
+                  <div className="absolute top-3 right-3 w-6 h-6 bg-accent rounded-full flex items-center justify-center text-white shadow-sm">
+                    <Check className="w-4 h-4" />
+                  </div>
+                )}
               </div>
-            </div>
+            ))}
+          </div>
+        );
 
-            {/* Form */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 bg-white">
-               <h2 className="text-3xl font-playfair font-bold mb-2">Почти готово!</h2>
-               <p className="text-text-medium mb-8">Оставьте контакты, чтобы закрепить за собой подарок и получить расчет.</p>
-               
-               <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-text-medium mb-1">Ваше имя</label>
-                    <input 
-                      type="text" 
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-accent outline-none transition-colors"
-                      placeholder="Иван"
-                      value={formData.name}
-                      onChange={e => setFormData({...formData, name: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-text-medium mb-1">Телефон</label>
-                    <input 
-                      type="tel" 
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-accent outline-none transition-colors"
-                      placeholder="+7 (___) ___-__-__"
-                      value={formData.phone}
-                      onChange={e => setFormData({...formData, phone: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                     <label className="block text-sm font-medium text-text-medium mb-1">Комментарий (необязательно)</label>
-                     <textarea 
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-accent outline-none transition-colors h-24 resize-none"
-                        placeholder="Пожелания..."
-                        value={formData.comment}
-                        onChange={e => setFormData({...formData, comment: e.target.value})}
-                     />
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    variant="primary" 
-                    className="w-full py-4 text-lg shadow-gold glow disabled:opacity-70 disabled:cursor-not-allowed"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Отправка...' : 'Получить расчёт'}
-                  </Button>
-                  <p className="text-xs text-center text-text-light mt-4">
-                    Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
-                  </p>
-               </form>
+      case 'slider':
+        return (
+          <div className="py-12 px-4 max-w-2xl mx-auto text-center">
+            <div className="text-6xl font-mono font-light text-primary mb-8">
+              {answers[step + 1] || 6} <span className="text-2xl text-text-light">м²</span>
             </div>
-        </div>
-      </div>
-    );
-  }
+            <input 
+              type="range" 
+              min="3" 
+              max="30" 
+              step="1"
+              defaultValue={6}
+              onChange={(e) => setAnswers(prev => ({ ...prev, [step + 1]: e.target.value }))}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-accent"
+            />
+            <div className="flex justify-between mt-4 text-text-light text-sm">
+              <span>3 м²</span>
+              <span>15 м²</span>
+              <span>30 м²</span>
+            </div>
+            <Button onClick={nextStep} className="mt-12 w-full md:w-auto">Подтвердить</Button>
+          </div>
+        );
+
+      case 'multi-select':
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+            {currentQuestion.options?.map((opt) => {
+              const isSelected = (answers[step + 1] || []).includes(opt);
+              return (
+                <div 
+                  key={opt}
+                  onClick={() => {
+                    const current = answers[step + 1] || [];
+                    const updated = isSelected 
+                      ? current.filter((i: string) => i !== opt) 
+                      : [...current, opt];
+                    setAnswers(prev => ({ ...prev, [step + 1]: updated }));
+                  }}
+                  className={cn(
+                    "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+                    isSelected 
+                      ? "border-accent bg-accent/5" 
+                      : "border-gray-100 bg-white hover:border-accent/30"
+                  )}
+                >
+                  <div className={cn(
+                    "w-6 h-6 rounded border flex items-center justify-center transition-colors",
+                    isSelected ? "bg-accent border-accent text-white" : "border-gray-300"
+                  )}>
+                    {isSelected && <Check className="w-4 h-4" />}
+                  </div>
+                  <span className="font-medium text-primary">{opt}</span>
+                </div>
+              );
+            })}
+            <div className="col-span-full mt-6 flex justify-center">
+               <Button onClick={nextStep}>Готово</Button>
+            </div>
+          </div>
+        );
+
+      case 'form':
+        if (isSuccess) {
+            return (
+                <div className="text-center py-12">
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Check className="w-10 h-10 text-green-600" />
+                    </div>
+                    <h2 className="text-3xl font-serif font-bold mb-4">Спасибо, {formData.name}!</h2>
+                    <p className="text-lg text-text-medium mb-8">
+                        Мы получили вашу заявку. Дизайнер свяжется с вами в течение 15 минут.
+                    </p>
+                    <div className="bg-primary/5 p-6 rounded-xl max-w-md mx-auto mb-8">
+                        <p className="font-medium mb-2">Ваш подарок забронирован:</p>
+                        <div className="text-xl font-bold text-accent">
+                            {answers[8]?.title || "Подарок"} 🎁
+                        </div>
+                    </div>
+                    <Link to="/">
+                        <Button variant="outline">Вернуться на главную</Button>
+                    </Link>
+                </div>
+            );
+        }
+
+        return (
+          <div className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl">
+            <h3 className="text-xl font-bold mb-6 text-center">Получите расчёт + {answers[8]?.title || 'Подарок'}</h3>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-text-medium">Ваше имя</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Алексей"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+                  value={formData.name}
+                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-text-medium">Телефон</label>
+                <input 
+                  type="tel" 
+                  required
+                  placeholder="+7 (999) 000-00-00"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+                  value={formData.phone}
+                  onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-text-medium">Комментарий (необязательно)</label>
+                <textarea 
+                  placeholder="Например: нужна кухня до потолка..."
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all h-24 resize-none"
+                  value={formData.comment}
+                  onChange={e => setFormData(prev => ({ ...prev, comment: e.target.value }))}
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-14 text-lg" 
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Отправка...' : 'Получить расчёт'}
+              </Button>
+              
+              <p className="text-xs text-center text-text-light">
+                Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+              </p>
+            </form>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-light flex flex-col">
-      {/* Quiz Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200 h-20">
-        <div className="container mx-auto h-full px-4 flex items-center justify-between">
-          <Link to="/" className="text-text-medium hover:text-primary transition-colors flex items-center gap-2">
-             <ArrowLeft size={20} /> <span className="hidden sm:inline">На главную</span>
+    <div className="min-h-screen bg-[#FAFAF8] flex flex-col">
+      {/* Header */}
+      <header className="h-16 bg-white border-b flex items-center px-4 sticky top-0 z-50">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link to="/" className="flex items-center text-sm font-medium text-text-medium hover:text-primary transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            На главную
           </Link>
           
-          <div className="flex flex-col items-center w-1/3">
-             <span className="text-sm font-mono font-medium text-accent uppercase tracking-widest mb-1">
-               Шаг {currentStep + 1} из {questions.length}
-             </span>
-             <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full bg-gradient-to-r from-accent to-secondary"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-             </div>
+          <div className="flex flex-col items-center">
+            <span className="text-xs font-mono text-accent tracking-widest uppercase">
+              Шаг {step + 1} из {totalSteps}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
-             <div className="text-right hidden sm:block">
-                <p className="text-xs text-text-light uppercase">Уровень эксперта</p>
-                <p className="font-bold text-primary">{expertLevel}</p>
+             <div className="text-xs font-bold text-primary hidden sm:block">
+                 {Math.round(progress)}%
              </div>
-             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-accent">
-               <Gift size={20} />
+             <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+                <motion.div 
+                    className="h-full bg-accent"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.5 }}
+                />
              </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow pt-28 pb-12 px-4 container mx-auto flex flex-col justify-center max-w-5xl">
-         <AnimatePresence mode="wait">
-            <motion.div
-               key={currentStep}
-               initial={{ opacity: 0, x: 20 }}
-               animate={{ opacity: 1, x: 0 }}
-               exit={{ opacity: 0, x: -20 }}
-               transition={{ duration: 0.3 }}
-               className="w-full"
-            >
-               <div className="text-center mb-10">
-                  <h1 className="text-3xl md:text-5xl font-playfair font-bold mb-4 text-primary">
-                    {question.title}
-                  </h1>
-                  <p className="text-lg text-text-medium">
-                    {question.subtitle}
-                  </p>
-               </div>
+      <main className="flex-1 container mx-auto px-4 py-8 md:py-12 max-w-5xl">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="w-full"
+          >
+            <div className="text-center mb-10">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-3">
+                {currentQuestion.title}
+              </h1>
+              {currentQuestion.subtitle && (
+                <p className="text-text-medium">{currentQuestion.subtitle}</p>
+              )}
+            </div>
 
-               {/* Render Options based on type */}
-               <div className="min-h-[400px]">
-                  {question.type === "cards" && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                      {question.options?.map((option: any) => (
-                        <div 
-                          key={option.id}
-                          onClick={() => handleSelect(option.id)}
-                          className={cn(
-                            "relative group cursor-pointer rounded-2xl overflow-hidden aspect-[4/5] border-2 transition-all duration-300",
-                            answers[question.id] === option.id ? "border-accent ring-2 ring-accent/30" : "border-transparent hover:border-gray-200"
-                          )}
-                        >
-                          <img src={option.image} alt={option.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                             <div className="w-full flex justify-between items-center">
-                                <h3 className="text-white font-bold text-xl">{option.title}</h3>
-                                {answers[question.id] === option.id && <div className="bg-accent text-white rounded-full p-1"><Check size={16}/></div>}
-                             </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+            {renderContent()}
 
-                  {question.type === "shapes" && (
-                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {question.options?.map((option: any) => (
-                           <div 
-                             key={option.id}
-                             onClick={() => handleSelect(option.id)}
-                             className={cn(
-                               "p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 flex flex-col items-center text-center gap-3 bg-white hover:shadow-lg",
-                               answers[question.id] === option.id ? "border-accent bg-accent/5" : "border-gray-100"
-                             )}
-                           >
-                              <div className={cn("w-20 h-20 p-2 rounded-xl", answers[question.id] === option.id ? "text-accent" : "text-gray-400")}>
-                                <ShapeIcon type={option.iconType} className="w-full h-full" />
-                              </div>
-                              <div>
-                                 <h3 className="font-bold text-lg mb-1">{option.title}</h3>
-                                 <p className="text-xs text-text-light">{option.desc}</p>
-                              </div>
-                           </div>
-                        ))}
-                     </div>
-                  )}
-
-                  {question.type === "slider" && (
-                     <div className="max-w-xl mx-auto py-12">
-                        <div className="text-center mb-12">
-                           <span className="text-8xl font-dm-mono font-bold text-primary">
-                             {answers[question.id] || question.min}
-                           </span>
-                           <span className="text-2xl text-text-light ml-2">{question.unit}</span>
-                        </div>
-                        <input 
-                           type="range"
-                           min={question.min}
-                           max={question.max}
-                           step={1}
-                           value={answers[question.id] || question.min}
-                           onChange={(e) => setAnswers({...answers, [question.id]: parseInt(e.target.value)})}
-                           className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-accent"
-                        />
-                        <div className="flex justify-between mt-4 text-sm text-text-light font-mono">
-                           <span>Компактная ({question.min} {question.unit})</span>
-                           <span>Просторная ({question.max} {question.unit})</span>
-                        </div>
-                        <div className="mt-12 text-center">
-                           <Button variant="primary" onClick={handleNext} className="w-full md:w-auto px-12">Далее</Button>
-                        </div>
-                     </div>
-                  )}
-
-                  {question.type === "cards_text" && (
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                        {question.options?.map((option: any) => (
-                           <div 
-                             key={option.id}
-                             onClick={() => handleSelect(option.id)}
-                             className={cn(
-                               "p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 flex items-center justify-between bg-white hover:shadow-md",
-                               answers[question.id] === option.id ? "border-accent bg-accent/5" : "border-gray-100"
-                             )}
-                           >
-                              <div>
-                                 <h3 className="font-bold text-lg">{option.title}</h3>
-                                 <p className="text-sm text-text-light">{option.desc}</p>
-                              </div>
-                              <div className="text-right">
-                                 <span className="text-text-light font-mono text-sm">{option.price}</span>
-                                 {answers[question.id] === option.id && <div className="text-accent mt-1"><Check size={20}/></div>}
-                              </div>
-                           </div>
-                        ))}
-                     </div>
-                  )}
-
-                  {question.type === "colors" && (
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto">
-                      {question.options?.map((option: any) => (
-                        <div 
-                          key={option.id}
-                          onClick={() => handleSelect(option.id)}
-                          className={cn(
-                            "group cursor-pointer flex flex-col items-center gap-3",
-                          )}
-                        >
-                          <div className={cn(
-                            "w-24 h-24 rounded-full shadow-lg transition-transform duration-300 group-hover:scale-105 relative flex items-center justify-center",
-                            answers[question.id] === option.id && "ring-4 ring-accent ring-offset-2"
-                          )}
-                          style={{ 
-                            background: option.hex,
-                            backgroundSize: 'cover',
-                            border: option.border ? '1px solid #e5e5e5' : 'none'
-                          }}
-                          >
-                             {answers[question.id] === option.id && <Check className={option.id === 'white' ? 'text-black' : 'text-white'} size={32} />}
-                          </div>
-                          <span className={cn("font-medium transition-colors", answers[question.id] === option.id ? "text-accent" : "text-text-medium")}>{option.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {question.type === "multiselect" && (
-                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {question.options?.map((option: any) => {
-                           const isSelected = (answers[question.id] || []).includes(option.id);
-                           return (
-                             <div 
-                               key={option.id}
-                               onClick={() => {
-                                  const current = answers[question.id] || [];
-                                  const newVal = isSelected ? current.filter((i: string) => i !== option.id) : [...current, option.id];
-                                  setAnswers({...answers, [question.id]: newVal});
-                               }}
-                               className={cn(
-                                 "p-5 rounded-xl border-2 cursor-pointer transition-all duration-300 flex items-center gap-3 bg-white hover:shadow-md",
-                                 isSelected ? "border-accent bg-accent/5" : "border-gray-100"
-                               )}
-                             >
-                                <div className={cn(
-                                   "w-6 h-6 rounded border flex items-center justify-center transition-colors",
-                                   isSelected ? "bg-accent border-accent" : "border-gray-300"
-                                )}>
-                                   {isSelected && <Check size={14} className="text-white"/>}
-                                </div>
-                                <span className="font-medium">{option.title}</span>
-                             </div>
-                           )
-                        })}
-                        <div className="col-span-full text-center mt-8">
-                           <Button variant="primary" onClick={handleNext} className="w-full md:w-auto px-12">Подтвердить выбор</Button>
-                        </div>
-                     </div>
-                  )}
-
-                  {question.type === "gift" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                       {question.options?.map((option: any) => (
-                          <div 
-                            key={option.id}
-                            onClick={() => {
-                               setAnswers({...answers, [question.id]: option.id});
-                               handleNext();
-                            }}
-                            className="bg-white rounded-2xl p-6 shadow-soft hover:shadow-gold transition-all duration-300 cursor-pointer border border-transparent hover:border-accent/30 group"
-                          >
-                             <div className="flex items-start justify-between mb-4">
-                                <span className="text-4xl">{option.icon}</span>
-                                <div className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-accent flex items-center justify-center">
-                                   <ChevronRight size={16} className="text-gray-300 group-hover:text-accent" />
-                                </div>
-                             </div>
-                             <h3 className="text-xl font-bold mb-1">{option.title}</h3>
-                             <p className="text-text-medium text-sm">{option.desc}</p>
-                          </div>
-                       ))}
-                    </div>
-                  )}
-               </div>
-            </motion.div>
-         </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
       </main>
 
-      {/* Footer Controls */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 md:hidden z-40">
-         <div className="flex justify-between gap-4">
-            <Button variant="ghost" onClick={handleBack} disabled={currentStep === 0} className="flex-1">
-               Назад
+      {/* Footer Navigation */}
+      {currentQuestion.type !== 'form' && (
+        <footer className="bg-white border-t p-4 sticky bottom-0 z-40">
+          <div className="container mx-auto max-w-5xl flex justify-between items-center">
+            <Button 
+              variant="ghost" 
+              onClick={prevStep}
+              disabled={step === 0}
+              className={cn(step === 0 && "opacity-0 pointer-events-none")}
+            >
+              Назад
             </Button>
-            {question.type === "multiselect" || question.type === "slider" ? null : (
-               <Button variant="outline" onClick={handleNext} className="flex-1">
-                  Пропустить
-               </Button>
+
+            {currentQuestion.type !== 'cards' && currentQuestion.type !== 'select' && (
+                <Button onClick={nextStep} className="px-8">
+                  Далее <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
             )}
-         </div>
-      </div>
+          </div>
+        </footer>
+      )}
     </div>
   );
-};
-
-export default Quiz;
+}
