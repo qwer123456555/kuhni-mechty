@@ -167,8 +167,8 @@ export default function Quiz() {
 
     setIsSubmitting(true);
 
-   const token = import.meta.env.VITE_TELEGRAM_TOKEN;
-   const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+   const token = "8531946647:AAHjzFF9omqxOIIziI8wmvrGhLUQIi_NkfQ";  // Например: "6031653609:AAF..."
+   const chatId = "536363486";    // Например: "404561239"
 
     if (!token || !chatId) {
         console.error("Missing Telegram configuration");
