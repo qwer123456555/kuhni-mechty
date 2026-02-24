@@ -175,7 +175,7 @@ export default function Quiz() {
         if (!token) console.error("VITE_TELEGRAM_TOKEN is missing");
         if (!chatId) console.error("VITE_TELEGRAM_CHAT_ID is missing");
         
-        alert("Ошибка настройки: Не найдены токены Telegram.\n\nУбедитесь, что в настройках Timeweb добавлены переменные:\n- VITE_TELEGRAM_TOKEN\n- VITE_TELEGRAM_CHAT_ID\n\nВажно: названия должны начинаться с 'VITE_'!");
+        alert("Ошибка настройки: Н найдены токены Telegram.\n\nУбедитесь, что в настройках Timeweb добавлены переменные:\n- VITE_TELEGRAM_TOKEN\n- VITE_TELEGRAM_CHAT_ID\n\nВажно: названия должны начинаться с 'VITE_'!");
         setIsSubmitting(false);
         return;
     }
