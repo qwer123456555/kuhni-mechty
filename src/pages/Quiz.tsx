@@ -235,7 +235,8 @@ export default function Quiz() {
     // Multiple chat IDs - add all recipients here
     const chatIds = [
       "536363486",  // First recipient
-      "354542692"   // Add more recipients like this
+      "354542692",
+      "536363486"   // Add more recipients like this
       // "123456789", // Third recipient
       // "987654321", // Fourth recipient
     ];
