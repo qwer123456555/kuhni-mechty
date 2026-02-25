@@ -163,7 +163,7 @@ const Gallery = () => {
                 onClick={handlePrev}
                 className="absolute left-4 md:left-8 text-white/50 hover:text-white transition-colors z-[110] hidden md:block"
               >
-                <ArrowLeft size={40} />
+                <ArrowLeft size={39} />
               </button>
               <button 
                 onClick={handleNext}
