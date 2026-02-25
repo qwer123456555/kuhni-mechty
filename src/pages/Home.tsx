@@ -139,7 +139,7 @@ function HeroSection() {
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
               className="absolute top-8 right-8 bg-primary/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/10"
             >
-              <p className="text-white/60 text-xs mb-1">ГАРНТИЯ</p>
+              <p className="text-white/60 text-xs mb-1">ГАРАНТИЯ</p>
               <p className="text-white font-mono font-medium">БЕССРОЧНАЯ </p>
             </motion.div>
           </motion.div>
