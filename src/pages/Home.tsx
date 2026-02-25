@@ -71,7 +71,7 @@ function HeroSection() {
             transition={{ delay: 0.4 }}
             className="text-lg text-text-medium max-w-lg leading-relaxed"
           >
-            Спроектируем и изготовим кухню вашей мечты за 30 дней.
+            Спроектируем и изготовим кухню вашей мечты.
             Бесплатный 3D-дизайн проект при заказе до конца месяца.
           </motion.p>
 
@@ -240,7 +240,7 @@ function StylesSection() {
     { title: "Классика", img: "https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg", price: "220 000" },
     { title: "Лофт", img: "https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg", price: "195 000" },
     { title: "Неоклассика", img: "https://kuhni-smart.ru/image/catalog/article/21neo03.jpg", price: "210 000" },
-    { title: "Минимализм", img: "https://11letopita.ru/assets/images/resources/240/1-13-kuhnya-v-stile-minimalizm.jpg", price: "175 000" },
+    { title: "Минимализм", img: "", price: "175 000" },
   ];
 
   return (
@@ -367,9 +367,9 @@ export function Home() {
                  Записаться на замер
                </Button>
              </Link>
-             <a href="tel:+79991234567" className="flex items-center gap-2 hover:text-accent transition-colors p-4">
+             <a href="tel:+7 (905) 071-95-847" className="flex items-center gap-2 hover:text-accent transition-colors p-4">
                <Phone className="w-5 h-5" />
-               <span>+7 (999) 123-45-67</span>
+               <span>+7 (905) 071-95-84</span>
              </a>
           </div>
         </div>
