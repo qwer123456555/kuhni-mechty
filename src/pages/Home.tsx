@@ -240,7 +240,7 @@ function StylesSection() {
     { title: "Классика", img: "https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg", price: "220 000" },
     { title: "Лофт", img: "https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg", price: "195 000" },
     { title: "Неоклассика", img: "https://kuhni-smart.ru/image/catalog/article/21neo03.jpg", price: "210 000" },
-    { title: "Минимализм", img: "", price: "175 000" },
+    { title: "Минимализм", img: "https://w.vardek.ru/local/templates/new_vardek_2025/img/img-48.png", price: "175 000" },
   ];
 
   return (
@@ -295,7 +295,7 @@ function QuizTeaserSection() {
         <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-[400px] lg:h-auto group">
             <img 
-              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop" 
+              src="https://avrora-kuhni.ru/upload/iblock/f71/wmsavn3ns02yfipgieibucvdx494gave.jpg" 
               alt="Kitchen Detail" 
               className="w-full h-full object-cover"
             />
@@ -362,7 +362,7 @@ export function Home() {
             Оставьте заявку на бесплатный замер и дизайн-проект. Мы приедем с образцами материалов.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-             <Link to="/contacts">
+             <Link to="/quiz">
                <Button size="lg" className="bg-white text-primary hover:bg-gray-100">
                  Записаться на замер
                </Button>

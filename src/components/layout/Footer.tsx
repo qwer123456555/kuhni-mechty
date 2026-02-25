@@ -19,9 +19,9 @@ export function Footer() {
         <div>
           <h4 className="font-serif text-lg mb-6 text-accent">Навигация</h4>
           <ul className="space-y-3 text-sm text-white/70">
-            {["Главная", "Каталог", "Квиз", "Галерея", "О нас", "Контакты"].map((item) => (
+            {["Главная", "Каталог", "Квиз", "Галерея", "О нас"].map((item) => (
               <li key={item}>
-                <Link to="/" className="hover:text-white hover:translate-x-1 transition-all inline-block">
+                <Link to="/quiz" className="hover:text-white hover:translate-x-1 transition-all inline-block">
                   {item}
                 </Link>
               </li>
@@ -34,7 +34,7 @@ export function Footer() {
           <ul className="space-y-3 text-sm text-white/70">
             {["Дизайн-проект", "Замер помещения", "Производство", "Доставка и монтаж", "Гарантийный сервис"].map((item) => (
               <li key={item}>
-                <Link to="/" className="hover:text-white hover:translate-x-1 transition-all inline-block">
+                <Link to="/quiz" className="hover:text-white hover:translate-x-1 transition-all inline-block">
                   {item}
                 </Link>
               </li>
@@ -58,7 +58,7 @@ export function Footer() {
       <div className="container mx-auto px-4 mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-white/40">
         <p>© 2026 Все права защищены.</p>
         <div className="flex gap-6 mt-4 md:mt-0">
-          <Link to="/" className="hover:text-white transition-colors">Политика конфиденциальности</Link>
+          <Link to="/contacts" className="hover:text-white transition-colors">Политика конфиденциальности</Link>
           <Link to="/" className="hover:text-white transition-colors">Договор оферты</Link>
         </div>
       </div>

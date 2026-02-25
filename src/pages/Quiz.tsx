@@ -379,7 +379,7 @@ export default function Quiz() {
               <span>15 м²</span>
               <span>30 м²</span>
             </div>
-            <Button onClick={nextStep} className="mt-12 w-full md:w-auto">Подтвердить</Button>
+            <Button onClick={nextStep} className="mt-16 w-40 md:w-50 h-15">Подтвердить</Button>
           </div>
         );
 
@@ -415,8 +415,10 @@ export default function Quiz() {
                 </div>
               );
             })}
-            <div className="col-span-full mt-6 flex justify-center">
-               <Button onClick={nextStep}>Готово</Button>
+            <div className="col-span-full mt-6 h-15  flex justify-center" >
+
+            <Button onClick={nextStep} className="mt-16 w-50 md:w-50 h-15">Подтвердить</Button>
+
             </div>
           </div>
         );
@@ -570,7 +572,7 @@ export default function Quiz() {
 
             {currentQuestion.type !== 'cards' && currentQuestion.type !== 'select' && (
                 <Button onClick={nextStep} className="px-8">
-                  Далее <ArrowRight className="w-4 h-4 ml-2" />
+                  Далее <ArrowRight className="w-4 h-10 ml-2" />
                 </Button>
             )}
           </div>

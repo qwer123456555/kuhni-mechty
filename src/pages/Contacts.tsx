@@ -1,91 +1,81 @@
-import React from "react";
-import { Layout } from "../components/layout/Layout";
-import Container from "../components/ui/Container";
-import { Button } from "../components/ui/Button";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
-const Contacts = () => {
+export default function PrivacyPolicy() {
   return (
-    <Layout>
-      <div className="pt-32 pb-12">
-        <Container>
-           <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-12 text-center">Контакты</h1>
-           
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              {/* Info */}
-              <div className="space-y-8">
-                 <div className="bg-white p-8 rounded-3xl shadow-soft">
-                    <h3 className="text-2xl font-bold mb-6 font-playfair">Наш шоурум</h3>
-                    <ul className="space-y-6">
-                       <li className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-light rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                             <MapPin size={24} />
-                          </div>
-                          <div>
-                             <p className="font-bold text-primary text-lg">Адрес</p>
-                             <p className="text-text-medium">г. Москва, ул. Лесная, д. 5, БЦ "White Square"</p>
-                             <p className="text-sm text-text-light mt-1">3 этаж, офис 305</p>
-                          </div>
-                       </li>
-                       <li className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-light rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                             <Phone size={24} />
-                          </div>
-                          <div>
-                             <p className="font-bold text-primary text-lg">Телефон</p>
-                             <p className="text-text-medium">+7 (999) 123-45-67</p>
-                             <p className="text-sm text-text-light mt-1">Ежедневно с 9:00 до 21:00</p>
-                          </div>
-                       </li>
-                       <li className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-light rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                             <Mail size={24} />
-                          </div>
-                          <div>
-                             <p className="font-bold text-primary text-lg">Email</p>
-                             <p className="text-text-medium">hello@kuhni-mechty.ru</p>
-                          </div>
-                       </li>
-                       <li className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-light rounded-full flex items-center justify-center text-accent flex-shrink-0">
-                             <Clock size={24} />
-                          </div>
-                          <div>
-                             <p className="font-bold text-primary text-lg">Режим работы</p>
-                             <p className="text-text-medium">Пн-Пт: 10:00 - 20:00</p>
-                             <p className="text-text-medium">Сб-Вс: 11:00 - 18:00</p>
-                          </div>
-                       </li>
-                    </ul>
-                 </div>
-                 
-                 <div className="bg-primary text-white p-8 rounded-3xl relative overflow-hidden">
-                    <div className="relative z-10">
-                       <h3 className="text-2xl font-bold mb-4 font-playfair">Есть вопросы?</h3>
-                       <p className="mb-6 opacity-90">Закажите обратный звонок, и наш менеджер свяжется с вами в течение 15 минут.</p>
-                       <Button variant="primary" className="w-full justify-center">Заказать звонок</Button>
-                    </div>
-                    {/* Decor */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
-                 </div>
-              </div>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm">
+        <div className="mb-8">
+          <Link to="/" className="inline-flex items-center text-sm text-gray-500 hover:text-orange-500 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться назад
+          </Link>
+        </div>
 
-              {/* Map Placeholder */}
-              <div className="h-[600px] bg-gray-200 rounded-3xl overflow-hidden shadow-medium relative">
-                 <iframe 
-                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.430481195992!2d37.58467231582914!3d55.77884298055938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a2a4b3b1e3b%3A0x6b4f7e5b5b5b5b5b!2z0JHQpiBXaGl0ZSBTcXVhcmU!5e0!3m2!1sen!2sru!4v1620000000000!5m2!1sen!2sru" 
-                   width="100%" 
-                   height="100%" 
-                   style={{border:0}} 
-                   loading="lazy"
-                   title="Map"
-                 ></iframe>
-              </div>
-           </div>
-        </Container>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Политика конфиденциальности</h1>
+        
+        <div className="space-y-6 text-gray-600 leading-relaxed">
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">1. Общие положения</h2>
+            <p>
+              Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. №152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">2. Какие данные мы собираем</h2>
+            <p>
+              Мы можем собирать следующую информацию:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Номер телефона</li>
+              <li>Ответы на вопросы квиза (предпочтения по дизайну, материалам и т.д.)</li>
+              <li>Комментарии, оставленные пользователем</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">3. Цели сбора данных</h2>
+            <p>
+              Ваши данные используются исключительно для:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Предварительного расчета стоимости кухонного гарнитура</li>
+              <li>Связи с вами для предоставления консультации</li>
+              <li>Предоставления обещанного подарка по результатам прохождения опроса</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">4. Защита данных</h2>
+            <p>
+              Мы принимаем необходимые организационные и технические меры для защиты персональной информации пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">5. Согласие пользователя</h2>
+            <p>
+              Оставляя данные в форме обратной связи и нажимая кнопку «Получить расчёт», вы автоматически соглашаетесь с данной Политикой конфиденциальности.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">6. Изменения политики</h2>
+            <p>
+              Мы оставляем за собой право вносить изменения в настоящую Политику конфиденциальности в любое время без предварительного уведомления.
+            </p>
+          </section>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-gray-100 text-center">
+          <Link to="/">
+            <button className="bg-orange-500 text-white px-8 py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors">
+              Понятно, вернуться к квизу
+            </button>
+          </Link>
+        </div>
       </div>
-    </Layout>
+    </div>
   );
-};
-
-export default Contacts;
+}
