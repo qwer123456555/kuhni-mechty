@@ -1,36 +1,30 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useLayoutEffect } from "react";
-import { Analytics } from "@vercel/analytics/react";
-import { Home } from "@/pages/Home";
-import Quiz from "@/pages/Quiz";
-import Catalog from "@/pages/Catalog";
-import Gallery from "@/pages/Gallery";
-import About from "@/pages/About";
-import Contacts from "@/pages/Contacts";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useYandexMetrika } from "./hooks/useYandexMetrika";
+import { Home } from "./pages/Home";
+import About from "./pages/About";
+import Catalog from "./pages/Catalog";
+import Gallery from "./pages/Gallery";
+import Quiz from "./pages/Quiz";
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
+// Обёртка для хука (хук должен быть внутри BrowserRouter)
+function MetrikaTracker() {
+  useYandexMetrika();
   return null;
 }
 
-export function App() {
+function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <Analytics />
+      <MetrikaTracker /> {/* ← добавить эту строку */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/about" element={<About />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/quiz" element={<Quiz />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
+export default App;

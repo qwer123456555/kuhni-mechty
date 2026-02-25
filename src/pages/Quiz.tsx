@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, ArrowLeft, Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 
 // --- Data & Types ---
 
@@ -189,6 +190,23 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // В самом начале компонента Quiz, после всех useState:
+
+  const METRIKA_ID = 106687295; // ← ваш номер
+
+  // Цель: квиз открыт
+  useEffect(() => {
+    if (typeof window.ym !== "undefined") {
+      window.ym(METRIKA_ID, "reachGoal", "quiz_start");
+    }
+  }, []);
+  // Добавьте этот useEffect после предыдущего:
+
+useEffect(() => {
+  if (step === 4 && typeof window.ym !== "undefined") {
+    window.ym(METRIKA_ID, "reachGoal", "quiz_step5");
+  }
+}, [step]);
   // Constants
   const totalSteps = QUESTIONS.length;
   const progress = ((step) / (totalSteps - 1)) * 100;
@@ -286,6 +304,18 @@ export default function Quiz() {
 
       if (successfulSends > 0) {
         setIsSuccess(true);
+        if (typeof window.ym !== "undefined") {
+    window.ym(METRIKA_ID, "reachGoal", "quiz_submit", {
+      style: answers[1]?.title || "",
+      shape: answers[2]?.title || "",
+      area: answers[3] || "",
+      facade: answers[4]?.title || "",
+      color: answers[5]?.title || "",
+      countertop: answers[6]?.title || "",
+      appliances: answers[7]?.join(", ") || "",
+      gift: answers[8]?.title || "",
+    });
+  }
       } else {
         const firstError = await responses[0].json();
         console.error("Telegram Error:", firstError);
@@ -379,7 +409,7 @@ export default function Quiz() {
               <span>15 м²</span>
               <span>30 м²</span>
             </div>
-            <Button onClick={nextStep} className="mt-16 w-40 md:w-50 h-15">Подтвердить</Button>
+            <Button onClick={nextStep} className="mt-5 w-40 md:w-50 h-15">Подтвердить</Button>
           </div>
         );
 
