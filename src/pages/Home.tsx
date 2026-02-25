@@ -170,7 +170,7 @@ function MarqueeSection() {
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
             <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">качественная фурнитура</span>
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
-            <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">Гарантия 10 лет</span>
+            <span className="text-primary font-display font-bold text-lg tracking-widest uppercase whitespace-nowrap">Бессрочная гарантия</span>
             <div className="w-2 h-2 rotate-45 bg-primary/40"></div>
           </div>
         ))}
@@ -191,7 +191,7 @@ function BenefitsSection() {
     { number: "12", label: "Лет на рынке", desc: "Успешной работы и развития" },
     { number: "3200+", label: "Проектов", desc: "Реализовано и установлено" },
     { number: "4.9", label: "Рейтинг", desc: "Средняя оценка клиентов" },
-    { number: "24", label: "Месяца", desc: "Гарантия на монтаж" },
+    { number: "∞", label: "Бессрочная", desc: "Гарантия на монтаж" },
   ];
 
   return (
@@ -235,12 +235,12 @@ function StylesSection() {
   };
 
   const styles = [
-    { title: "Современный", img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop", price: "185 000" },
-    { title: "Скандинавский", img: "https://images.unsplash.com/photo-1556909212-d5b604d0c90d?q=80&w=2070&auto=format&fit=crop", price: "165 000" },
-    { title: "Классика", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=2071&auto=format&fit=crop", price: "220 000" },
-    { title: "Лофт", img: "https://images.unsplash.com/photo-1556909190-eccf4c8ba7ef?q=80&w=2070&auto=format&fit=crop", price: "195 000" },
-    { title: "Неоклассика", img: "https://images.unsplash.com/photo-1484154218962-a1c002085d2f?q=80&w=2071&auto=format&fit=crop", price: "210 000" },
-    { title: "Минимализм", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop", price: "175 000" },
+    { title: "Современный", img: "https://mebel-e96.ru/uploads/files/pryamye-kuhni.jpg", price: "" },
+    { title: "Скандинавский", img: "https://avatars.mds.yandex.net/get-mpic/4737085/img_id2202497645844917424.jpeg/orig", price: "165 000" },
+    { title: "Классика", img: "https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg", price: "220 000" },
+    { title: "Лофт", img: "https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg", price: "195 000" },
+    { title: "Неоклассика", img: "https://kuhni-smart.ru/image/catalog/article/21neo03.jpg", price: "210 000" },
+    { title: "Минимализм", img: "https://11letopita.ru/assets/images/resources/240/1-13-kuhnya-v-stile-minimalizm.jpg", price: "175 000" },
   ];
 
   return (
@@ -276,7 +276,6 @@ function StylesSection() {
             
             <div className="absolute bottom-0 left-0 w-full p-3 md:p-6 translate-y-0 md:translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
               <h3 className="text-sm md:text-2xl font-serif font-bold mb-0.5 md:mb-1 leading-tight">{style.title}</h3>
-              <p className="text-white/70 text-[10px] md:text-sm mb-1 md:mb-3">от {style.price} ₽</p>
               <span className="hidden md:inline-flex items-center text-accent text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity delay-100">
                 Подробнее <ArrowRight className="w-3 h-3 ml-2" />
               </span>
@@ -318,9 +317,8 @@ function QuizTeaserSection() {
             
             <ul className="space-y-4 mb-10">
               {[
-                "Расчёт стоимости в 3 вариантах",
+                "Расчёт стоимости",
                 "3D-визуализация бесплатно",
-                "Скидка до 15% за прохождение теста",
                 "Подарок на выбор (мойка, вытяжка...)"
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-text-dark">

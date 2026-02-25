@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, ArrowLeft, Check
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 // --- Data & Types ---
@@ -21,50 +20,77 @@ interface Question {
 }
 
 const KITCHEN_STYLES = [
-  { id: 'modern', title: 'Современный', img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800' },
-  { id: 'classic', title: 'Классика', img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&q=80&w=800' },
-  { id: 'scandi', title: 'Скандинавский', img: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&q=80&w=800' },
-  { id: 'loft', title: 'Лофт', img: 'https://images.unsplash.com/photo-1556909190-eccf4c8ba7ef?auto=format&fit=crop&q=80&w=800' },
-  { id: 'neoclassic', title: 'Неоклассика', img: 'https://images.unsplash.com/photo-1484154218962-a1c002085d2f?auto=format&fit=crop&q=80&w=800' },
-  { id: 'tech', title: 'Хай-тек', img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800' },
+  { id: 'modern', title: 'Современный', img: 'https://mebel-e96.ru/uploads/files/pryamye-kuhni.jpg' },
+  { id: 'classic', title: 'Классика', img: 'https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg' },
+  { id: 'scandi', title: 'Скандинавский', img: 'https://avatars.mds.yandex.net/get-mpic/4737085/img_id2202497645844917424.jpeg/orig' },
+  { id: 'loft', title: 'Лофт', img: 'https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg' },
+  { id: 'neoclassic', title: 'Неоклассика', img: 'https://kuhni-smart.ru/image/catalog/article/21neo03.jpg' },
+  { id: 'tech', title: 'Минимализм', img: 'https://11letopita.ru/assets/images/resources/240/1-13-kuhnya-v-stile-minimalizm.jpg' },
 ];
 
 const KITCHEN_SHAPES = [
   { id: 'linear', title: 'Прямая', icon: (
-      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
-        <rect x="10" y="30" width="80" height="20" rx="2" />
-        <rect x="10" y="30" width="20" height="20" rx="1" fill="currentColor" fillOpacity="0.1" />
-        <rect x="35" y="35" width="10" height="10" rx="5" />
-        <rect x="55" y="32" width="15" height="16" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        {/* Countertop */}
+        <rect x="10" y="35" width="80" height="30" rx="3" />
+        {/* Sink area */}
+        <rect x="25" y="42" width="15" height="16" rx="2" fill="currentColor" fillOpacity="0.1" />
+        <circle cx="32.5" cy="50" r="1.5" fill="currentColor" />
+        {/* Hob area */}
+        <rect x="65" y="42" width="15" height="16" rx="2" />
+        <circle cx="69" cy="47" r="1.5" />
+        <circle cx="76" cy="47" r="1.5" />
+        <circle cx="69" cy="53" r="1.5" />
+        <circle cx="76" cy="53" r="1.5" />
+        {/* Cabinet lines */}
+        <path d="M50 35 v30" strokeOpacity="0.3" />
       </svg>
     ) 
   },
   { id: 'corner', title: 'Г-образная', icon: (
-      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
-        <path d="M10 20 H 40 V 80" strokeLinecap="round" strokeLinejoin="round" />
-        <rect x="10" y="20" width="30" height="20" rx="2" />
-        <rect x="20" y="40" width="20" height="40" rx="2" />
-        <circle cx="25" cy="30" r="3" fill="currentColor" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        {/* L-Shape */}
+        <path d="M15 20 h65 a3 0 0 0 1 3 3 v60 a3 3 0 0 1 -3 3 h-25 a3 3 0 0 1 -3 -3 v-35 h-37 a3 3 0 0 1 -3 -3 v-25 a3 0 0 0 0 0 0 z" />
+        {/* Corner */}
+        <path d="M52 20 v32 h31" strokeOpacity="0.3" />
+        {/* Sink */}
+        <rect x="62" y="60" width="14" height="18" rx="2" fill="currentColor" fillOpacity="0.1" />
+        {/* Hob */}
+        <rect x="25" y="28" width="18" height="14" rx="2" />
+        <circle cx="30" cy="35" r="1.5" />
+        <circle cx="38" cy="35" r="1.5" />
       </svg>
     ) 
   },
   { id: 'u-shape', title: 'П-образная', icon: (
-      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
-        <path d="M10 80 V 20 H 90 V 80" strokeLinecap="round" strokeLinejoin="round" />
-        <rect x="10" y="20" width="20" height="60" rx="2" />
-        <rect x="70" y="20" width="20" height="60" rx="2" />
-        <rect x="30" y="20" width="40" height="20" rx="2" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        {/* U-Shape */}
+        <path d="M15 80 v-55 a3 3 0 0 1 3 -3 h64 a3 3 0 0 1 3 3 v55 a3 3 0 0 1 -3 3 h-20 a3 3 0 0 1 -3 -3 v-32 h-18 v32 a3 3 0 0 1 -3 3 h-20 a3 3 0 0 1 -3 -3 z" />
+        {/* Corners */}
+        <path d="M15 50 h24 v33 M61 83 v-33 h24" strokeOpacity="0.3" />
+        {/* Sink */}
+        <rect x="42" y="28" width="16" height="12" rx="2" fill="currentColor" fillOpacity="0.1" />
+        {/* Hob */}
+        <rect x="68" y="55" width="12" height="16" rx="2" />
       </svg>
     ) 
   },
   { id: 'island', title: 'С островом', icon: (
-      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="4">
-         <rect x="10" y="20" width="80" height="20" rx="2" />
-         <rect x="30" y="60" width="40" height="20" rx="2" fill="currentColor" fillOpacity="0.1" />
+      <svg viewBox="0 0 100 100" className="w-full h-full text-current" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+         {/* Main Wall */}
+         <rect x="10" y="20" width="80" height="25" rx="3" />
+         <path d="M36 20 v25 M64 20 v25" strokeOpacity="0.3" />
+         {/* Island */}
+         <rect x="25" y="60" width="50" height="25" rx="3" fill="currentColor" fillOpacity="0.1" />
+         {/* Hob on Island */}
+         <rect x="40" y="65" width="20" height="15" rx="2" strokeOpacity="0.5" />
+         <circle cx="45" cy="72.5" r="1.5" />
+         <circle cx="55" cy="72.5" r="1.5" />
       </svg>
     ) 
   },
 ];
+
 
 const COLORS = [
   { id: 'white', title: 'Белый', hex: '#FFFFFF', border: true },
@@ -78,16 +104,16 @@ const COLORS = [
 ];
 
 const MATERIALS = [
-  { id: 'ldsp', title: 'ЛДСП', desc: 'Бюджетный вариант', price: '₽', img: 'https://images.unsplash.com/photo-1610369874026-6b22c6686307?auto=format&fit=crop&q=60&w=400' },
-  { id: 'mdf-pvc', title: 'МДФ Плёнка', desc: 'Оптимальный выбор', price: '₽₽', img: 'https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?auto=format&fit=crop&q=60&w=400' },
-  { id: 'mdf-enamel', title: 'МДФ Эмаль', desc: 'Премиальный вид', price: '₽₽₽', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=60&w=400' },
-  { id: 'plastic', title: 'Пластик', desc: 'Долговечный', price: '₽₽', img: 'https://images.unsplash.com/photo-1620608138844-6ae32779a552?auto=format&fit=crop&q=60&w=400' },
+  { id: 'ldsp', title: 'ЛДСП', desc: 'Лучшее соотношение цены-качества', price: '₽', img: 'https://images.deal.by/205130042_w640_h640_ldsp-chfmk-dub.jpg' },
+  { id: 'mdf-pvc', title: 'МДФ Плёнка', desc: 'Практичность', price: '₽₽', img: 'https://avatars.mds.yandex.net/get-mpic/11375994/2a000001998070259facdcb2f09ef199652c/orig' },
+  { id: 'mdf-enamel', title: 'МДФ Эмаль', desc: 'Премиальный вид', price: '₽₽₽', img: 'https://www.svetdvierok.sk/files/akryl-briliant/akryl-vsetkydvierka.jpg' },
+  { id: 'plastic', title: 'Пластик', desc: 'Долговечность', price: '₽₽', img: 'https://ir.ozone.ru/s3/multimedia-1-7/6983718775.jpg' },
 ];
 
 const COUNTERTOPS = [
-  { id: 'ldsp', title: 'Пластик (HPL)', desc: 'Влагостойкий', price: 'от 4 000 ₽/м', img: 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&q=60&w=400' },
-  { id: 'stone-artificial', title: 'Искусственный камень', desc: 'Без стыков', price: 'от 14 000 ₽/м', img: 'https://images.unsplash.com/photo-1597211833712-5e41dd201646?auto=format&fit=crop&q=60&w=400' },
-  { id: 'stone-natural', title: 'Натуральный камень', desc: 'Вечный', price: 'от 25 000 ₽/м', img: 'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=60&w=400' },
+  { id: 'ldsp', title: 'Пластик', desc: 'Влагостойкий', img: 'https://cdn.lemanapro.ru/lmru/image/upload/c_pad/q_auto/f_auto/dpr_2.0/w_1000/h_1000/v1770900762/lmcode/vUcr5zlAkEmsYh1wUMKcBA/86820677.png' },
+  { id: 'stone-artificial', title: 'Искусственный камень', desc: 'Без стыков', img: 'https://avatars.mds.yandex.net/get-mpic/3922047/2a000001943491285a5bc937a1e5f28fe36c/orig' },
+  { id: 'stone-natural', title: 'Натуральный камень', desc: 'Вечный', img: 'https://kirkstone.ru/wp-content/uploads/2020/09/stoleshnica-iz-isskustvennogo-kamnia-0.jpg' },
 ];
 
 const APPLIANCES = [
@@ -96,10 +122,11 @@ const APPLIANCES = [
 ];
 
 const GIFTS = [
-  { id: 'design', title: '3D-проект', desc: 'Визуализация кухни в интерьере', icon: '🎨', price: '15 000 ₽' },
-  { id: 'discount', title: 'Скидка 15%', desc: 'На кухонный гарнитур', icon: '💰', price: 'до 75 000 ₽' },
-  { id: 'install', title: 'Монтаж', desc: 'Бесплатная установка', icon: '🔧', price: '25 000 ₽' },
-  { id: 'blum', title: 'Петли Blum', desc: 'Комплект на 5 ящиков', icon: '🎁', price: '30 000 ₽' },
+  { id: 'sink', title: 'Каменная мойка', desc: 'Глубокая и прочная', icon: '🚰' },
+  { id: 'light', title: 'LED-подсветка', desc: 'Рабочей зоны', icon: '💡' },
+  { id: 'hood', title: 'Вытяжка', desc: 'Полновстраиваемая', icon: '💨' },
+  { id: 'hob', title: 'Варочная панель', desc: 'Стеклокерамика', icon: '🔥' },
+  { id: 'discount', title: 'Максимальная скидка', desc: 'Индивидуальный расчет', icon: '🏷️' },
 ];
 
 const QUESTIONS: Question[] = [
@@ -114,6 +141,42 @@ const QUESTIONS: Question[] = [
   { id: 9, type: 'form', title: 'Почти готово!', subtitle: 'Куда отправить расчёт?' },
 ];
 
+// Button component
+const Button = ({ 
+  children, 
+  variant = 'default', 
+  className = '', 
+  disabled = false,
+  onClick,
+  type = 'button'
+}: { 
+  children: React.ReactNode;
+  variant?: 'default' | 'outline' | 'ghost';
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  type?: 'button' | 'submit';
+}) => {
+  const baseStyles = "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
+  
+  const variants = {
+    default: "bg-accent text-white hover:bg-accent/90 focus:ring-accent/50",
+    outline: "border-2 border-gray-200 bg-white text-primary hover:border-accent hover:text-accent focus:ring-accent/30",
+    ghost: "text-text-medium hover:text-primary hover:bg-gray-100 focus:ring-gray-200"
+  };
+
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(baseStyles, variants[variant], disabled && "opacity-50 cursor-not-allowed", className)}
+    >
+      {children}
+    </button>
+  );
+};
+
 // --- Main Component ---
 
 export default function Quiz() {
@@ -121,8 +184,8 @@ export default function Quiz() {
   const [answers, setAnswers] = useState<Record<number, any>>({});
   const [direction, setDirection] = useState(0);
   
-  // Form State
-  const [formData, setFormData] = useState({ name: '', phone: '', comment: '' });
+  // Form State - Removed name
+  const [formData, setFormData] = useState({ phone: '', comment: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -160,31 +223,34 @@ export default function Quiz() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-        alert("Пожалуйста, заполните Имя и Телефон");
+    if (!formData.phone) {
+        alert("Пожалуйста, заполните Телефон");
         return;
     }
 
     setIsSubmitting(true);
 
-   const token = "8531946647:AAHjzFF9omqxOIIziI8wmvrGhLUQIi_NkfQ";  // Например: "6031653609:AAF..."
-   const chatId = "536363486";    // Например: "404561239"
+    const token = "8531946647:AAHjzFF9omqxOIIziI8wmvrGhLUQIi_NkfQ";
+    
+    // Multiple chat IDs - add all recipients here
+    const chatIds = [
+      "536363486",  // First recipient
+      "354542692"   // Add more recipients like this
+      // "123456789", // Third recipient
+      // "987654321", // Fourth recipient
+    ];
 
-    if (!token || !chatId) {
+    if (!token || chatIds.length === 0) {
         console.error("Missing Telegram configuration");
-        if (!token) console.error("VITE_TELEGRAM_TOKEN is missing");
-        if (!chatId) console.error("VITE_TELEGRAM_CHAT_ID is missing");
-        
-        alert("Ошибка настройки: Н найдены токены Telegram.\n\nУбедитесь, что в настройках Timeweb добавлены переменные:\n- VITE_TELEGRAM_TOKEN\n- VITE_TELEGRAM_CHAT_ID\n\nВажно: названия должны начинаться с 'VITE_'!");
+        alert("Ошибка настройки: Нет токенов Telegram.");
         setIsSubmitting(false);
         return;
     }
 
-    // Formatted Message
+    // Formatted Message - Removed name
     const message = `
-🌟 <b>Новая заявка с сайта!</b>
+🌟 <b>Новая заявка </b> 🌟
 
-👤 <b>Имя:</b> ${formData.name}
 📞 <b>Телефон:</b> ${formData.phone}
 💬 <b>Комментарий:</b> ${formData.comment || "Нет"}
 
@@ -200,24 +266,30 @@ export default function Quiz() {
     `;
 
     try {
-      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: 'HTML',
-        }),
-      });
+      // Send message to all chat IDs
+      const sendPromises = chatIds.map(chatId => 
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'HTML',
+          }),
+        })
+      );
 
-      if (response.ok) {
+      const responses = await Promise.all(sendPromises);
+      const successfulSends = responses.filter(r => r.ok).length;
+
+      if (successfulSends > 0) {
         setIsSuccess(true);
       } else {
-        const errorData = await response.json();
-        console.error("Telegram Error:", errorData);
-        alert(`Ошибка отправки: ${errorData.description || "Неизвестная ошибка"}`);
+        const firstError = await responses[0].json();
+        console.error("Telegram Error:", firstError);
+        alert(`Ошибка отправки: ${firstError.description || "Неизвестная ошибка"}`);
       }
     } catch (error) {
       console.error("Network Error:", error);
@@ -356,7 +428,8 @@ export default function Quiz() {
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Check className="w-10 h-10 text-green-600" />
                     </div>
-                    <h2 className="text-3xl font-serif font-bold mb-4">Спасибо, {formData.name}!</h2>
+                    {/* Removed name from success message */}
+                    <h2 className="text-3xl font-serif font-bold mb-4">Спасибо!</h2>
                     <p className="text-lg text-text-medium mb-8">
                         Мы получили вашу заявку. Дизайнер свяжется с вами в течение 15 минут.
                     </p>
@@ -378,17 +451,7 @@ export default function Quiz() {
             <h3 className="text-xl font-bold mb-6 text-center">Получите расчёт + {answers[8]?.title || 'Подарок'}</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-text-medium">Ваше имя</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Алексей"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-                  value={formData.name}
-                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                />
-              </div>
+              {/* Removed name input field */}
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-medium">Телефон</label>
