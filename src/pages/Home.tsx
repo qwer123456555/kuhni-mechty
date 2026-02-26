@@ -72,7 +72,7 @@ function HeroSection() {
             className="text-lg text-text-medium max-w-lg leading-relaxed"
           >
             Спроектируем и изготовим кухню вашей мечты.
-            Бесплатный 3D-дизайн проект при заказе до конца месяца.
+            Бесплатный 3D-дизайн проект при заказе до конца месяца
           </motion.p>
 
           <motion.div 
