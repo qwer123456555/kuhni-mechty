@@ -234,7 +234,7 @@ export default function Quiz() {
     
     // Multiple chat IDs - add all recipients here
     const chatIds = [
-      "536363486","354542692", "988072154" // Add more recipients like this
+      "-5139585741" // Add more recipients like this
       // "123456789", // Third recipient
       // "987654321", // Fourth recipient
     ];
@@ -248,9 +248,10 @@ export default function Quiz() {
 
     // Formatted Message - Removed name
     const message = `
-🌟 <b>Новая заявка </b> 🌟
+🔥 <b>НОВАЯ ЗАЯВКА</b> 🔥
 
 📞 <b>Телефон:</b> ${formData.phone}
+
 💬 <b>Комментарий:</b> ${formData.comment || "Нет"}
 
 📊 <b>Ответы квиза:</b>
