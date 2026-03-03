@@ -34,7 +34,7 @@ import { Button } from "@/components/ui/Button";
    DATA
    ═══════════════════════════════════════════════ */
 
-const HERO_WORDS = ["     прожить", "творить", "любить"];
+const HERO_WORDS = ["жить", "творить", "любить"];
 
 const MARQUEE_ITEMS = [
   "Индивидуальный дизайн",
@@ -68,12 +68,13 @@ const BENEFITS: Benefit[] = [
 ];
 
 const GALLERY = [
-  { img: "https://i.pinimg.com/originals/bc/d6/7b/bcd67bbc765df53205e70dc6f80a2d21.jpg", title: "Белая классика", tag: "Классика" },
-  { img: "https://mebel-e96.ru/uploads/files/pryamye-kuhni.jpg", title: "Современная прямая", tag: "Модерн" },
-  { img: "https://avatars.mds.yandex.net/get-mpic/4737085/img_id2202497645844917424.jpeg/orig", title: "Скандинавский стиль", tag: "Сканди" },
-  { img: "https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg", title: "Итальянская классика", tag: "Классика" },
-  { img: "https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg", title: "Лофт индустриальный", tag: "Лофт" },
-  { img: "https://avrora-kuhni.ru/upload/iblock/f71/wmsavn3ns02yfipgieibucvdx494gave.jpg", title: "Угловая кухня", tag: "Модерн" },
+  { img: "https://www.mebelmsk.ru/upload/resize_cache/iblock/05d/950_700_1/05ddcc51abb5e211db489ba6a84a3fdd.jpg" },
+  { img: "https://ruson.su/upload/iblock/003/n8v1utizsg47h660mdcfwg9rhbdn6pcn.png" },
+  { img: "https://bigmebel-msk.ru/wp-content/uploads/2017/01/klasskika-belaya-uglovaya-patina1.jpg" },
+  { img: "https://mebelbor.ru/upload/iblock/36b/4xrte6l34egan7o97q3egqlajv15l0er.jpg"},
+  { img: "https://cache3.youla.io/files/images/780_780/5d/da/5ddac0b73f53c4b8772c0294.jpg"},
+  { img: "https://cs1.livemaster.ru/storage/80/4a/ba78c87cf8e544969819e9fc59qo--dlya-doma-i-interera-kuhnya-uglovaya.jpg"},
+  { img: "https://cs2.livemaster.ru/storage/05/4d/dd97adc25138bf2f735c53cc4c7z--dlya-doma-i-interera-kuhnya-uglovaya-pod-zakaz.jpg"},
 ];
 
 const STYLES = [
@@ -82,13 +83,13 @@ const STYLES = [
   { title: "Классика", img: "https://itacom.ru/wp-content/uploads/2019/10/kuhni_prestige_regina9.jpg" },
   { title: "Лофт", img: "https://cdn1.ozone.ru/s3/multimedia-2/6727682846.jpg" },
   { title: "Неоклассика", img: "https://kuhni-smart.ru/image/catalog/article/21neo03.jpg" },
-  { title: "Минимализм", img: "https://w.vardek.ru/local/templates/new_vardek_2025/img/img-48.png" },
+  { title: "Минимализм", img: "https://arline.ru/upload/iblock/44f/skwaxzb25xsyfy6o81gf88u2ryv69s91.jpg" },
 ];
 
 const STEPS = [
   { icon: Ruler, num: "01", title: "Замер", desc: "Бесплатный выезд мастера с образцами" },
   { icon: Monitor, num: "02", title: "3D-Проект", desc: "Реалистичная визуализация вашей кухни" },
-  { icon: Settings, num: "03", title: "Производство", desc: "Изготовление за 20–30 дней" },
+  { icon: Settings, num: "03", title: "Производство", desc: "Изготовление с расписанными" },
   { icon: Hammer, num: "04", title: "Монтаж", desc: "Установка с бессрочной гарантией" },
 ];
 
@@ -410,14 +411,7 @@ function HeroSection() {
                 <p className="text-white/60 text-[10px]">гарантия на монтаж</p>
               </motion.div>
 
-              {/* Price */}
-              <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 2 }}
-                className="bg-white/[0.06] backdrop-blur-xl p-3 rounded-xl border border-white/[0.06]"
-              >
-                
-              </motion.div>
+              
             </motion.div>
           </div>
         </div>
@@ -714,17 +708,13 @@ function GallerySection() {
             >
               <img
                 src={item.img}
-                alt={item.title}
+                
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-500 flex flex-col items-center justify-center">
-                <span className="text-accent text-[9px] sm:text-[10px] font-display font-bold tracking-wider uppercase opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 delay-75 mb-1">
-                  {item.tag}
-                </span>
-                <h3 className="text-white font-serif text-[11px] sm:text-sm md:text-lg font-bold text-center px-3 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 delay-100">
-                  {item.title}
-                </h3>
+            
+                
                 <ArrowUpRight className="w-4 h-4 text-white/50 mt-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 delay-150" />
               </div>
             </motion.div>
