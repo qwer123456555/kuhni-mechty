@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   motion,
   useScroll,
@@ -567,6 +568,11 @@ function StylesSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const navigate = useNavigate();
+
+  const handleStyleClick = (category: string) => {
+  navigate(`/pages/catalog?style=${category}`);
+};
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -575,6 +581,7 @@ function StylesSection() {
   };
 
   return (
+    
     <section ref={sectionRef} className="py-12 sm:py-20 md:py-24 bg-primary text-white overflow-hidden">
       <div className="container mx-auto px-5 sm:px-6 mb-5 sm:mb-8">
         <div className="flex items-end justify-between gap-4">
@@ -597,9 +604,10 @@ function StylesSection() {
           </div>
           <div className="hidden sm:flex gap-2">
             {(["left", "right"] as const).map((dir) => (
+              
               <button
                 key={dir}
-                onClick={() => scroll(dir)}
+                onClick={() => handleStyleClick}
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/15 flex items-center justify-center hover:bg-accent hover:border-accent transition-all"
               >
                 {dir === "left" ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -614,38 +622,41 @@ function StylesSection() {
         className="flex gap-2.5 sm:gap-4 overflow-x-auto pb-4 px-5 sm:px-6 snap-x snap-mandatory scrollbar-hide"
       >
         {STYLES.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
-            className="relative group flex-shrink-0 snap-start cursor-pointer
-              w-[140px] h-[190px]
-              sm:w-[220px] sm:h-[290px]
-              md:w-[280px] md:h-[360px]
-              rounded-xl sm:rounded-2xl overflow-hidden"
-          >
-            <img
-              src={s.img}
-              alt={s.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+          <Link to="/Catalog">
+            <motion.div
+              
+              key={i}
+              initial={{ opacity: 0, x: 30 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
+              className="relative group flex-shrink-0 snap-start cursor-pointer
+                w-[140px] h-[190px]
+                sm:w-[220px] sm:h-[290px]
+                md:w-[280px] md:h-[360px]
+                rounded-xl sm:rounded-2xl overflow-hidden"
+            >
+              <img
+                src={s.img}
+                alt={s.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
-            <span className="absolute top-2 left-2.5 sm:top-3 sm:left-4 font-mono text-white/[0.06] text-2xl sm:text-4xl font-bold select-none">
-              0{i + 1}
-            </span>
-
-            <div className="absolute bottom-0 left-0 w-full p-2.5 sm:p-4">
-              <h3 className="text-[12px] sm:text-sm md:text-base font-serif font-bold">
-                {s.title}
-              </h3>
-              <span className="hidden sm:inline-flex items-center gap-1 text-accent text-[10px] font-medium mt-1 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                Подробнее <ArrowRight className="w-3 h-3" />
+              <span className="absolute top-2 left-2.5 sm:top-3 sm:left-4 font-mono text-white/[0.06] text-2xl sm:text-4xl font-bold select-none">
+                0{i + 1}
               </span>
-            </div>
-          </motion.div>
+
+              <div className="absolute bottom-0 left-0 w-full p-2.5 sm:p-4">
+                <h3 className="text-[12px] sm:text-sm md:text-base font-serif font-bold">
+                  {s.title}
+                </h3>
+                <span className="hidden sm:inline-flex items-center gap-1 text-accent text-[10px] font-medium mt-1 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                  Подробнее <ArrowRight className="w-3 h-3" />
+                </span>
+              </div>
+            </motion.div>
+          </Link>
         ))}
       </div>
     </section>

@@ -11,7 +11,7 @@ import {
   Gift,
   Home,
 } from "lucide-react";
-import { cn } from "src/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 // --- Data & Types ---
 
